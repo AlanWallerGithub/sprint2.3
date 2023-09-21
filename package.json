@@ -1,0 +1,16 @@
+{
+  "name": "sprint2",
+  "version": "1.0.0",
+  "description": "Hacer funciones throttle, debounce y memoize, sprint 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Alan Waller Ordóñez",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "jest": "^29.7.0"
+  }
+}
