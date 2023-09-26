@@ -1,3 +1,7 @@
+
+
+type callbackTipoPersonalizado = (arg1: number) => number;
+
 function alCuadrado(cifra: number){
     let resultadoCallback: number = 0;
     for (let i: number = 1; i<=cifra;i++){
@@ -8,7 +12,7 @@ function alCuadrado(cifra: number){
     return resultadoCallback;
 }
 
-const memoize: object = (callback: object) => {
+const memoize = (callback: callbackTipoPersonalizado) => {
 
 
     let valoresAnteriores: number[] = [];
@@ -18,11 +22,16 @@ const memoize: object = (callback: object) => {
         let contadorInicial: number = Date.now();
 
         if (typeof(callback) !== 'function'){
-            return document.getElementById("mostrar").innerHTML ="ERROR: el callback debe ser una función";
+            let elementoHTML = document.getElementById('mostrar');
+            if(elementoHTML){
+                return (elementoHTML as HTMLElement).innerHTML = "ERROR: el callback debe ser una función"; } 
         }
 
         if (isNaN(cifraParaMemoize)){
-            return document.getElementById("mostrar").innerHTML = "ERROR: el argumento debe ser un número";
+
+            let elementoHTML = document.getElementById('mostrar');
+            if(elementoHTML){
+                return (elementoHTML as HTMLElement).innerHTML = "ERROR: el argumento debe ser un número"; } 
         }
 
         if (valoresAnteriores[cifraParaMemoize]){
@@ -30,31 +39,47 @@ const memoize: object = (callback: object) => {
             let contadorFinalConCache: number = Date.now();
             let tiempoTotalConCache: number = contadorFinalConCache-contadorInicial;
 
-            return document.getElementById("mostrar").innerHTML = "El resultado es "+valoresAnteriores[cifraParaMemoize]+" y ha tardado "+tiempoTotalConCache+"ms en realizarse"
+            let elementoHTML = document.getElementById('mostrar');
+            if(elementoHTML){
+                return (elementoHTML as HTMLElement).innerHTML = "El resultado es "+valoresAnteriores[cifraParaMemoize]+" y ha tardado "+tiempoTotalConCache+"ms en realizarse"; } 
 
 
     
         }
 
-        let resultadoMemoize: number = callback(cifraParaMemoize);
+        
+            let resultadoMemoize = callback(cifraParaMemoize);
+        
+
+        
 
         valoresAnteriores[cifraParaMemoize] = resultadoMemoize;
 
             let contadorFinalSinCache: number = Date.now();
             let tiempoTotalSinCache: number = contadorFinalSinCache-contadorInicial;
-            return document.getElementById("mostrar").innerHTML = "El resultado es "+resultadoMemoize+" y ha tardado "+tiempoTotalSinCache+"ms en realizarse"
+
+            let elementoHTML = document.getElementById('mostrar');
+            if(elementoHTML){
+                return (elementoHTML as HTMLElement).innerHTML = "El resultado es "+resultadoMemoize+" y ha tardado "+tiempoTotalSinCache+"ms en realizarse"; } 
 
     }
     
 }
 
-const alCuadradoConMemoize: object = memoize(alCuadrado);
+const alCuadradoConMemoize = memoize(alCuadrado);
 
 function calcular(){
 
-    let numUsuarioInput: number = Number(document.getElementById("numeroUsuario").value);
+    let elementoHTML = document.getElementById('numeroUsuario');
 
-    alCuadradoConMemoize(numUsuarioInput);
+    if(elementoHTML){
+        let numUsuarioInput = Number((elementoHTML as HTMLInputElement).value);
+
+        alCuadradoConMemoize(numUsuarioInput);
+    }
+
+
+    
 
 }
 

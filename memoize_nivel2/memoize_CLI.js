@@ -16,10 +16,10 @@ function alCuadrado(cifra) {
     }
     return resultadoCallback;
 }
-const memoize = (callback) => {
+let memoize = (callback) => {
     let valoresAnteriores = [];
     try {
-        valoresAnteriores = Object.values(JSON.parse(fs_1.default.readFileSync("./valoresAnteriores.json")));
+        valoresAnteriores = Object.values(JSON.parse(fs_1.default.readFileSync("./valoresAnteriores.json").toString()));
     }
     catch (err) {
         // Si no existe el array, lo crearé más abajo
@@ -54,10 +54,16 @@ function readlineEterno() {
     rl.question("Introduzca un número o escriba 'exit' sin comillas para salir\n", (inputUsuario) => {
         if (inputUsuario.trim() == "exit") {
             console.log("¡Adiós!");
-            fs_1.default.unlink('./valoresAnteriores.json', (err) => {
-                if (err)
-                    throw err;
-            });
+            try {
+                if (fs_1.default.existsSync('./valoresAnteriores.json')) {
+                    fs_1.default.unlink('./valoresAnteriores.json', (err) => {
+                        if (err)
+                            throw err;
+                    });
+                }
+            }
+            catch (err) {
+            }
             return rl.close();
         }
         else {

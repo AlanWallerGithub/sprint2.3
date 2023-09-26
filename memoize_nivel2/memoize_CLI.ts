@@ -1,3 +1,5 @@
+
+
 import readline from 'readline';
 import fs from 'fs';
 const rl = readline.createInterface({input : process.stdin,
@@ -13,13 +15,13 @@ function alCuadrado(cifra: number){
     return resultadoCallback;
 }
 
-const memoize: object = (callback: object) => {
+let memoize = (callback: object) => {
 
 
     let valoresAnteriores: number[] = [];
 
     try {
-        valoresAnteriores = Object.values(JSON.parse(fs.readFileSync("./valoresAnteriores.json")));
+        valoresAnteriores = Object.values(JSON.parse(fs.readFileSync("./valoresAnteriores.json").toString()));
     }
     catch (err) {
         // Si no existe el array, lo crearé más abajo
@@ -66,21 +68,33 @@ const memoize: object = (callback: object) => {
     
 }
 
-const alCuadradoConMemoize: object = memoize(alCuadrado);
+    const alCuadradoConMemoize = memoize(alCuadrado);
+  
 
-function readlineEterno() {
+function readlineEterno(): void {
     rl.question("Introduzca un número o escriba 'exit' sin comillas para salir\n", (inputUsuario: string) => {
         if (inputUsuario.trim() == "exit") {
             console.log("¡Adiós!");
-            fs.unlink('./valoresAnteriores.json', (err) => {
-                if (err)
-                    throw err;
-            });
+            try{
+                if (fs.existsSync('./valoresAnteriores.json')) {
+                    fs.unlink('./valoresAnteriores.json', (err) => {
+                        if (err)
+                            throw err;
+                    });
+                  }
+            }catch(err){
+
+            }
+            
             return rl.close();
         }
         else {
             let numUsuario: number = Number(inputUsuario);
+
+            
             alCuadradoConMemoize(numUsuario);
+              
+
             readlineEterno();
         }
     });
